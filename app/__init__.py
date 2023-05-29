@@ -62,6 +62,11 @@ def create_app(test_config=None):
 
     db = _db
     
+    from .handler_for_failures.handle_form import bp
+    app.register_blueprint(bp)
+    
+    from .cli_dev import bp
+    app.register_blueprint(bp)
     return app
 
 app = create_app()
