@@ -3,7 +3,7 @@ from flask import Blueprint
 from readchar import readchar
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from .models import ArchivesCrusherFailures
+from .handler_for_failures.models import ArchivesCrusherFailures
 from . import db, logger
 
 
