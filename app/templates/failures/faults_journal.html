@@ -1,9 +1,9 @@
 {% if journal %}
-    <h1>Журнал сообщений с информацией о причинах отказов от регулирования</h1>
+    <h1>Журнал сообщений с информацией о неисправностях</h1>
     <hr>
     {% for j in journal %}
         <p>
-            Отказано <b>{{ j['time_created'] }}</b>; причина написана <b>{{j['time_updated']}}</b>;
+            Неисправность от <b>{{ j['time_created'] }}</b>; неисправность зафиксирована <b>{{j['time_updated']}}</b>;
             № дробилки <b>{{j['crusher_id']}}</b>
         </p>
         <p>
@@ -17,7 +17,9 @@
         Судя по всему нет незаполненных сообщений о причинах отказа
         в регулировании зазора, но вы можете посмотреть <a href="/journal">журнал</a>.
     </p>
-    <!-- <button style="display: block;">
-        
-    </button> -->
+    <p>Или зафиксировать неисправность:</p>
+    <form action="{{ url_for('formhandler.fail_form_new_post') }}" class="fail-form" method="post">
+        <input type="submit">
+    </form>
+    <button onclick="add_field()">ADD FIELD</button>
 {% endif %}

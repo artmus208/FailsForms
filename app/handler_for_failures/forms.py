@@ -12,7 +12,7 @@ class TestForm(FlaskForm):
 
 
 class ACFForm(FlaskForm):
-    fault = TextAreaField("Ваша причина, сэр:",
+    fault = TextAreaField("Неисправность",
                             validators=[Length(min=1, max=255)]
                             )
     # def __init__(self, label):

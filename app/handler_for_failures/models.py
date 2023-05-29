@@ -39,17 +39,24 @@ class ArchivesCrusherFailures(MyBaseClass, db.Model):
     crusher_id = Column(Integer)
     fault = Column(String(255))
     
-    def __init__(self, crusher_id=0, fail=''):
+    def __init__(self, crusher_id=0, fail='', time_created=None):
         self.crusher_id = crusher_id
         self.fault = fail
+        if time_created: self.time_created = time_created
 
     def __repr__(self):
         return f'{self.id},{self.time_created},{self.time_updated},{self.crusher_id},{self.fault}'
 
     def as_dict(self):
+        
+        if self.time_updated:
+            time_upd = self.time_updated.strftime("%d.%m.%Y %H:%M")
+        else:
+            time_upd = self.time_created.strftime("%d.%m.%Y %H:%M")
+        
         d = dict(zip(['id', 'time_created', 'time_updated', 'crusher_id', 'fault'],
                     [self.id, self.time_created.strftime("%d.%m.%Y %H:%M"), 
-                    self.time_updated.strftime("%d.%m.%Y %H:%M"), self.crusher_id, self.fault]))
+                    time_upd, self.crusher_id, self.fault]))
         return d
 
     @classmethod

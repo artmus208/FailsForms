@@ -1,49 +1,29 @@
 {% extends "failures/base.html" %}
 {% block content %}
 {% if forms is not none and forms.faults|length %}
-<h1> Форма заполнения неисправностей </h1>
-<hr>
-<form action="{{ url_for('formhandler.fail_form_post') }}" class="fail-form" method="post">
-  {{ forms.csrf_token }}
-  {% for form in forms.faults %}
-    <div>
-      {{ form.fault.label }} <br>
-      {{ form.fault(class="comment", placeholder="Ваша причина, сэр:",
-      cols="65")}}
-    </div>
-    {% if form.fault.errors %}
-      <ul class="errors">
-        {% for error in form.fault.errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endfor %}
-  <div>{{ forms.submit() }}</div>
-</form>
+  <h1> Форма заполнения неисправностей </h1>
+  <hr>
+  <form action="{{ url_for('formhandler.fail_form_post') }}" class="fail-form" method="post">
+    {{ forms.csrf_token }}
+    {% for form in forms.faults %}
+      <div>
+        {{ form.fault.label }} <br>
+        {{ form.fault(class="comment", placeholder="Неисправность:",
+        cols="65")}}
+      </div>
+      {% if form.fault.errors %}
+        <ul class="errors">
+          {% for error in form.fault.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endfor %}
+    <div>{{ forms.submit() }}</div>
+  </form>
+  <button onclick="add_field()">ADD FIELD</button>
 {% else %}
   {% include "failures/faults_journal.html" %}
 {% endif %}
 {% endblock content %}
 
-{% block script %}
-<script>
-  function add_field() {
-    var x = document.getElementsByClassName("fail-form");
-    // создаем новое поле ввода
-    var new_field = document.createElement("input");
-    // установим для поля ввода тип данных 'text'
-    new_field.setAttribute("type", "text");
-    // установим имя для поля ввода
-    new_field.setAttribute("name", "text_field[]");
-    // определим место вствки нового поля ввода (перед каким элементом его вставить)
-    var pos = x.childElementCount;
-    // добавим поле ввода в форму
-    x.insertBefore(new_field, x.childNodes[pos]);
-  }
-  var formElement = document.querySelector(".fail-form");
-  console.log(formElement);
-  textAreas = formElement.querySelectorAll("textarea")
-  console.log(textAreas.length)
-</script>
-{% endblock script %}

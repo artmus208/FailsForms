@@ -5,13 +5,74 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="{{url_for('static', filename='scripts/date.js')}}"></script>
   <title>Журнал неисправностей</title>
 </head>
 
 <body>
 
   {% block content %}{% endblock content %}
-  {% block script %}{% endblock script %}
+  <script>
+    function count_textarea(formElem){
+      var textAreas = formElem[0].querySelectorAll("textarea");
+      var textAreas_len = textAreas.length;
+      return textAreas_len;
+    }
+  
+    function insert_count_textarea(){
+      var x = document.getElementsByClassName("fail-form");
+      var count = document.createElement('input');
+      count.setAttribute('type', 'number');
+      count.setAttribute('id', 'count');
+      count.style.display = "none";
+      var textAreas = x[0].querySelectorAll("textarea");
+      var textAreas_len = textAreas.length;
+      count.value = textAreas_len.toString();
+      var pos = x[0].childElementCount;
+      x[0].appendChild(count);
+    }
+  
+    function add_field() {
+      var x = document.getElementsByClassName("fail-form");
+    
+      var textAreas = x[0].querySelectorAll("textarea");
+      var textAreas_len = textAreas.length;
+      // Для названия
+      var div_cont = document.createElement("div");
+      date_str = (new Date()).toString('dd.MM.yyyy HH:mm');
+      var label = document.createTextNode("Заполните неисправность от " + date_str + " с номером дробилки: ");
+      div_cont.appendChild(label);
+      crusher_id = document.createElement('input');
+      crusher_id.setAttribute('type', 'number');
+      crusher_id.setAttribute('class', 'additional-cr-id');
+      crusher_id.setAttribute('name', "faults-"+textAreas_len.toString()+"-fault");
+      crusher_id.required = true;
+      crusher_id.style.width = "50px";
+      div_cont.appendChild(crusher_id)
+      div_cont.appendChild(document.createElement('br'))       
+      // создаем новое поле ввода
+      var new_field = document.createElement("textarea");
+  
+      new_field.setAttribute("class", "comment");
+      new_field.setAttribute("cols", "65");
+      new_field.setAttribute("id", "faults-"+textAreas_len.toString()+"-fault");
+      new_field.setAttribute("name", "faults-"+textAreas_len.toString()+"-fault");
+      new_field.setAttribute("maxlength", "255");
+      new_field.setAttribute("minlength", "1");
+      new_field.setAttribute("placeholder", "Неисправность?");
+      div_cont.appendChild(new_field)
+      // определим место вствки нового поля ввода (перед каким элементом его вставить)
+      // добавим поле ввода в форму
+      x[0].insertBefore(div_cont, x[0].childNodes[3]);
+      var new_field_time = document.createElement("input");
+      new_field_time.setAttribute('type', 'text');
+      new_field_time.setAttribute("name", "faults-"+textAreas_len.toString()+"-fault");
+      new_field_time.setAttribute("id", "faults-"+textAreas_len.toString()+"-fault_time");
+      new_field_time.value = (new Date()).toString('yyyy-MM-dd HH:mm:ss');
+      new_field_time.style.display = 'none';
+      x[0].appendChild(new_field_time);
+    }
+  </script>
 </body>
 
 </html>
